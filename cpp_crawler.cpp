@@ -21,6 +21,7 @@ int main()
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_func);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &html_string);
 	const auto &resp = curl_easy_perform(curl);
+	curl_easy_cleanup(curl);
 
 	//auto end_time = std::chrono::high_resolution_clock::now();
 	//auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
