@@ -35,43 +35,43 @@ public:
     }
 
     void find_by_partial_id(GumboNode* node, std::string partialId) {
-        if (isNode(node)) {
-            GumboAttribute* attribute = gumbo_get_attribute(&node->v.element.attributes, "id");
-            if (attribute != nullptr) {
-                if (std::string(attribute->value).find(partialId) != std::string::npos) {
-                    GumboVector* gumbo_node_vector = &node->v.element.children;
-                    for (int i = 0; i < gumbo_node_vector->length; i++) {
-                        GumboNode* local = static_cast<GumboNode*>(gumbo_node_vector->data[i]);
-                        if (local->type == GUMBO_NODE_TEXT) {
-                            std::cout << local->v.text.text;
-                        }
-                    }
-                }
-            }
+        if (node == nullptr || !isNode(node)) {
+            return;
+        }
+        GumboAttribute* attribute = gumbo_get_attribute(&node->v.element.attributes, "id");
+        if (attribute != nullptr && std::string(attribute->value).find(partialId) != std::string::npos) {
             GumboVector* gumbo_node_vector = &node->v.element.children;
             for (int i = 0; i < gumbo_node_vector->length; i++) {
                 GumboNode* local = static_cast<GumboNode*>(gumbo_node_vector->data[i]);
-                find_by_partial_id(local, partialId);
+                if (local->type == GUMBO_NODE_TEXT) {
+                    std::cout << local->v.text.text;
+                }
             }
+        }
+        GumboVector* gumbo_node_vector = &node->v.element.children;
+        for (int i = 0; i < gumbo_node_vector->length; i++) {
+            GumboNode* local = static_cast<GumboNode*>(gumbo_node_vector->data[i]);
+            find_by_partial_id(local, partialId);
         }
     }
 
     void find_by_tag(GumboNode* node, GumboTag gumbo_tag) {
-        if (isNode(node)) {
-            if (node->v.element.tag == gumbo_tag) {
-                GumboVector* gumbo_node_vector = &node->v.element.children;
-                for (int i = 0; i < gumbo_node_vector->length; i++) {
-                    GumboNode* local = static_cast<GumboNode*>(gumbo_node_vector->data[i]);
-                    if (local->type == GUMBO_NODE_TEXT) {
-                        std::cout << local->v.text.text;
-                    }
-                }
-            }
+        if (node == nullptr || !isNode(node)) {
+            return;
+        }
+        if (node->v.element.tag == gumbo_tag) {
             GumboVector* gumbo_node_vector = &node->v.element.children;
             for (int i = 0; i < gumbo_node_vector->length; i++) {
                 GumboNode* local = static_cast<GumboNode*>(gumbo_node_vector->data[i]);
-                find_by_tag(local, gumbo_tag);
+                if (local->type == GUMBO_NODE_TEXT) {
+                    std::cout << local->v.text.text;
+                }
             }
+        }
+        GumboVector* gumbo_node_vector = &node->v.element.children;
+        for (int i = 0; i < gumbo_node_vector->length; i++) {
+            GumboNode* local = static_cast<GumboNode*>(gumbo_node_vector->data[i]);
+            find_by_tag(local, gumbo_tag);
         }
     }
 };
