@@ -33,7 +33,7 @@ int main()
 
 	//std::cout << "time: " << duration.count() << " milliseconds or " << duration.count() / (double)1000 << " second" << std::endl;
 
-	//std::cout << html_string;
+	// std::cout << html_string;
 
 	//GumboOutput* output = gumbo_parse("<h1>Hello, World!</h1>");
 	////std::cout << typeid(output->root->type).name();

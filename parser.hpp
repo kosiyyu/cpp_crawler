@@ -30,22 +30,27 @@ public:
             return;
         }
         GumboNode* root = output->root;
-        find(root, "post-title-t3_16");
+        find_by_partial_id(root, "post-title-t3_16");
     }
 
-    void find(GumboNode* node, std::string targetId) {
+    void find_by_partial_id(GumboNode* node, std::string partialId) {
         if (isNode(node)) {
             GumboAttribute* attribute = gumbo_get_attribute(&node->v.element.attributes, "id");
             if (attribute != nullptr) {
-                if (std::string(attribute->value).find(targetId) != std::string::npos) {
-                    // do sth with node
-                    // getting text out of node doesnt work :ccc
+                if (std::string(attribute->value).find(partialId) != std::string::npos) {
+                    GumboVector* gumbo_node_vector = &node->v.element.children;
+                    for (int i = 0; i < gumbo_node_vector->length; i++) {
+                        GumboNode* local = static_cast<GumboNode*>(gumbo_node_vector->data[i]);
+                        if (local->type == GUMBO_NODE_TEXT) {
+                            std::cout << local->v.text.text;
+                        }
+                    }
                 }
             }
             GumboVector* gumbo_node_vector = &node->v.element.children;
             for (int i = 0; i < gumbo_node_vector->length; i++) {
                 GumboNode* local = static_cast<GumboNode*>(gumbo_node_vector->data[i]);
-                find(local, targetId);
+                find_by_partial_id(local, partialId);
             }
         }
     }
